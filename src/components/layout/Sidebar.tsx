@@ -11,17 +11,14 @@ const Sidebar: React.FC = () => (
       <NavLink to="/patients/123/risk" className="rounded-xl px-3 py-2 hover:bg-slate-800">
         Dashboard
       </NavLink>
-      <NavLink to="/patients/123/profile" className="rounded-xl px-3 py-2 hover:bg-slate-800">
-        Patient Profile
-      </NavLink>
       <NavLink to="/cases/new/symptoms" className="rounded-xl px-3 py-2 hover:bg-slate-800">
         Risk Analysis
       </NavLink>
-      <NavLink to="/history" className="rounded-xl px-3 py-2 hover:bg-slate-800">
+      <NavLink to="/clinician/patients/123" className="rounded-xl px-3 py-2 hover:bg-slate-800">
         History & Logs
       </NavLink>
-      <NavLink to="/settings" className="rounded-xl px-3 py-2 hover:bg-slate-800">
-        Settings
+      <NavLink to="/conditions/migraine" className="rounded-xl px-3 py-2 hover:bg-slate-800">
+        Treatment Awareness
       </NavLink>
     </nav>
     <div className="mt-auto text-xs text-slate-300">For informational use only.</div>

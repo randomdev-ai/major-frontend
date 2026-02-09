@@ -10,9 +10,6 @@ import RiskPredictionPage from './pages/RiskPredictionPage';
 import RiskExplanationPage from './pages/RiskExplanationPage';
 import PatientRiskDashboard from './pages/PatientRiskDashboard';
 import TreatmentLandscapePage from './pages/TreatmentLandscapePage';
-import HistoryLogsPage from './pages/HistoryLogsPage';
-import SettingsPage from './pages/SettingsPage';
-import PatientProfilePage from './pages/PatientProfilePage';
 import AppShell from './components/layout/AppShell';
 import { useAuthStore } from './stores/useAuthStore';
 
@@ -62,30 +59,6 @@ const App: React.FC = () => {
         element={
           <AppShell>
             <PatientRiskDashboard />
-          </AppShell>
-        }
-      />
-      <Route
-        path="/patients/:id/profile"
-        element={
-          <AppShell>
-            <PatientProfilePage />
-          </AppShell>
-        }
-      />
-      <Route
-        path="/history"
-        element={
-          <AppShell>
-            <HistoryLogsPage />
-          </AppShell>
-        }
-      />
-      <Route
-        path="/settings"
-        element={
-          <AppShell>
-            <SettingsPage />
           </AppShell>
         }
       />
