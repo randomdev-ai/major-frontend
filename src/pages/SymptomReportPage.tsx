@@ -8,6 +8,7 @@ import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Stepper from '../components/ui/Stepper';
 import Chip from '../components/ui/Chip';
+import VoiceInput from '../components/features/VoiceInput';
 import InfoBanner from '../components/ui/InfoBanner';
 import { useStepForm } from '../hooks/useStepForm';
 import { submitSymptomReport } from '../mocks/api';
@@ -30,7 +31,7 @@ const SymptomReportPage: React.FC = () => {
   const {
     register,
     handleSubmit,
-    reset,
+    setValue,
     trigger,
     formState: { errors },
   } = useForm<FormValues>({
@@ -61,41 +62,27 @@ const SymptomReportPage: React.FC = () => {
     <div className="space-y-6">
       <InfoBanner />
       <div>
-        <div className="flex items-center justify-between text-xs font-semibold text-slate-400">
-          <span>STEP {step} OF {totalSteps}: SYMPTOM REPORTING</span>
-          <span>{Math.round((step / totalSteps) * 100)}% Completed</span>
-        </div>
-        <div className="mt-3">
-          <Stepper current={step} total={totalSteps} />
-        </div>
+        <h1 className="text-2xl font-semibold text-slate-900">Symptom Report</h1>
+        <p className="text-sm text-slate-600">Structured intake with validation and privacy-first handling.</p>
       </div>
       <Card className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-semibold text-slate-900">What brings you here today?</h1>
-          <p className="text-sm text-slate-500">
-            Our AI system will analyze your input to suggest next steps. Please be as descriptive as possible.
-          </p>
-        </div>
+        <Stepper current={step} total={totalSteps} />
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           {step === 1 && (
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-semibold">Symptom Description</label>
-                <div className="relative mt-2">
-                  <textarea
-                    {...register('symptoms')}
-                    rows={4}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm"
-                    placeholder="Describe your symptoms here (e.g., I've had a throbbing headache and fever for 2 days...)."
-                  />
-                  <div className="absolute bottom-3 right-3 rounded-full border border-slate-200 bg-white p-2 text-slate-400">
-                    <Mic size={16} />
-                  </div>
-                </div>
+                <label className="text-sm font-semibold">Describe your symptoms</label>
+                <textarea
+                  {...register('symptoms')}
+                  rows={4}
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm"
+                  placeholder="Share how you're feeling, when it started, and anything notable."
+                />
                 {errors.symptoms && <p className="mt-1 text-xs text-red-500">{errors.symptoms.message}</p>}
               </div>
+              <VoiceInput onTranscript={(value) => setValue('symptoms', value)} />
               <div>
-                <p className="text-xs font-semibold text-slate-400">Common Suggestions:</p>
+                <p className="text-sm font-semibold">Quick symptoms</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {chips.map((chip) => (
                     <Chip key={chip} label={chip} active={selectedChips.includes(chip)} onClick={() => toggleChip(chip)} />
@@ -105,37 +92,34 @@ const SymptomReportPage: React.FC = () => {
             </div>
           )}
           {step === 2 && (
-            <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-slate-700">Additional Vitals</h3>
-              <div className="grid gap-4 md:grid-cols-3">
-                <div>
-                  <label className="text-xs font-semibold text-slate-500">Duration</label>
-                  <input
-                    {...register('duration')}
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm"
-                    placeholder="e.g. 2 days"
-                  />
-                  {errors.duration && <p className="mt-1 text-xs text-red-500">{errors.duration.message}</p>}
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-slate-500">Temperature</label>
-                  <input
-                    {...register('temperature')}
-                    className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm"
-                    placeholder="e.g. 38.5°C"
-                  />
-                  {errors.temperature && <p className="mt-1 text-xs text-red-500">{errors.temperature.message}</p>}
-                </div>
-                <div>
-                  <label className="text-xs font-semibold text-slate-500">Pain Severity</label>
-                  <input
-                    {...register('pain', { valueAsNumber: true })}
-                    type="range"
-                    min={0}
-                    max={10}
-                    className="mt-3 w-full"
-                  />
-                </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="text-sm font-semibold">Duration</label>
+                <input
+                  {...register('duration')}
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm"
+                  placeholder="e.g., 3 days"
+                />
+                {errors.duration && <p className="mt-1 text-xs text-red-500">{errors.duration.message}</p>}
+              </div>
+              <div>
+                <label className="text-sm font-semibold">Temperature</label>
+                <input
+                  {...register('temperature')}
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm"
+                  placeholder="e.g., 99.8°F"
+                />
+                {errors.temperature && <p className="mt-1 text-xs text-red-500">{errors.temperature.message}</p>}
+              </div>
+              <div className="md:col-span-2">
+                <label className="text-sm font-semibold">Pain severity</label>
+                <input
+                  {...register('pain', { valueAsNumber: true })}
+                  type="range"
+                  min={0}
+                  max={10}
+                  className="mt-2 w-full"
+                />
               </div>
             </div>
           )}
@@ -175,6 +159,22 @@ const SymptomReportPage: React.FC = () => {
               )}
               {step === 3 && <Button type="submit">Submit Symptoms →</Button>}
             </div>
+              <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm">
+                Optional file upload area (UI only)
+              </div>
+              <p className="text-xs text-slate-500">End-to-end encrypted. Your data stays private and secure.</p>
+            </div>
+          )}
+          <div className="flex items-center justify-between">
+            <Button type="button" variant="ghost" onClick={back} disabled={step === 1}>
+              Back
+            </Button>
+            {step < 3 && (
+              <Button type="button" onClick={step === 1 ? handleNext : handleSecondNext}>
+                Continue
+              </Button>
+            )}
+            {step === 3 && <Button type="submit">Submit for analysis</Button>}
           </div>
         </form>
       </Card>

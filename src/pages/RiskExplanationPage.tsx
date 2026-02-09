@@ -1,89 +1,44 @@
 import React from 'react';
-import { ArrowLeft } from 'lucide-react';
 import Card from '../components/ui/Card';
 import InfoBanner from '../components/ui/InfoBanner';
 import Button from '../components/ui/Button';
 import { Link } from 'react-router-dom';
-import RiskDriverBar from '../components/ui/RiskDriverBar';
-import { riskDrivers } from '../data/mockData';
 
 const RiskExplanationPage: React.FC = () => (
   <div className="space-y-6">
-    <div className="flex items-center justify-between">
+    <InfoBanner />
+    <div className="flex flex-wrap items-center justify-between gap-4">
       <div>
-        <p className="text-xs text-slate-400">Dashboard / Patient Risk Analysis / Risk Explanation</p>
-        <h1 className="mt-2 text-2xl font-semibold text-slate-900">
-          Risk Prediction: Type 2 Diabetes
-          <span className="ml-2 rounded-full bg-red-100 px-2 py-1 text-xs text-red-600">High Risk</span>
-        </h1>
-        <p className="text-sm text-slate-500">Patient: John Doe (ID: #49201) • 45 Yrs • Male</p>
+        <h1 className="text-2xl font-semibold text-slate-900">AI Reasoning</h1>
+        <p className="text-sm text-slate-600">Plain-language interpretation of the risk summary.</p>
       </div>
       <Link to="/patients/123/risk">
-        <Button variant="outline">
-          <ArrowLeft size={16} className="mr-2" /> Back to Dashboard
-        </Button>
+        <Button variant="outline">Back to summary</Button>
       </Link>
     </div>
-    <InfoBanner />
-    <div className="grid gap-6 lg:grid-cols-[1.2fr,1fr]">
-      <div className="space-y-6">
-        <Card className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-semibold text-slate-700">Model Confidence</h3>
-              <p className="text-sm text-slate-500">High Confidence</p>
-            </div>
-            <div className="text-2xl font-semibold text-slate-900">87%</div>
-          </div>
-          <div className="h-2 rounded-full bg-slate-100">
-            <div className="h-full w-[87%] rounded-full bg-cyan-500" />
-          </div>
-          <div className="rounded-xl bg-slate-50 p-4 text-sm text-slate-600">
-            The system is highly confident based on 12 matched indicators. This is a statistical projection
-            derived from available data, and individual variations may exist.
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-slate-700">Why this result?</h4>
-            <p className="mt-2 text-sm text-slate-600">
-              The analysis highlights a correlation between elevated HbA1c levels (6.8%) and a consistent upward
-              trend in fasting glucose. Historically, this pattern strongly indicates metabolic changes
-              associated with Type 2 Diabetes. Secondary factors include a BMI increase into the obesity range
-              and reported sedentary behavior.
-            </p>
-          </div>
-        </Card>
-        <Card className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h4 className="text-sm font-semibold text-slate-700">Recommended Next Steps</h4>
-            <p className="text-xs text-slate-500">Actions suggested based on risk level.</p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Button variant="outline">Flag for Review</Button>
-            <Button>View Treatment Options</Button>
-          </div>
-        </Card>
-      </div>
-      <Card className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-slate-700">Key Risk Drivers</h3>
-          <button className="text-xs font-semibold text-cyan-600">View All Factors</button>
-        </div>
-        <div className="space-y-3">
-          {riskDrivers.map((driver) => (
-            <RiskDriverBar
-              key={driver.label}
-              label={driver.label}
-              value={driver.value}
-              emphasis={driver.emphasis}
-            />
-          ))}
-        </div>
+    <div className="grid gap-6 lg:grid-cols-2">
+      <Card className="space-y-3">
+        <h3 className="text-sm font-semibold text-slate-700">Why this risk was predicted</h3>
+        <p className="text-sm text-slate-600">
+          The AI model identifies patterns in reported symptoms and lab markers that align with moderate risk
+          indicators for metabolic conditions. Confidence reflects statistical likelihood rather than a
+          definitive diagnosis.
+        </p>
+        <p className="text-sm text-slate-600">
+          The explanation adapts to confidence levels, emphasizing proactive conversations and routine
+          monitoring when moderate confidence is detected.
+        </p>
+      </Card>
+      <Card className="space-y-3">
+        <h3 className="text-sm font-semibold text-slate-700">Key contributing factors</h3>
+        <ul className="space-y-2 text-sm text-slate-600">
+          <li>Elevated HbA1c trend and fasting glucose markers.</li>
+          <li>Reported fatigue combined with lifestyle indicators.</li>
+          <li>Family history increases statistical weight.</li>
+        </ul>
+        <p className="text-xs text-slate-500">This interpretation is informational and not medical advice.</p>
       </Card>
     </div>
-    <Card className="text-xs text-slate-500">
-      Medical Disclaimer: This prediction is generated by an AI system for informational and decision-support
-      purposes only. It does not constitute a definitive medical diagnosis.
-    </Card>
   </div>
 );
 

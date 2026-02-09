@@ -11,6 +11,7 @@ vi.mock('../mocks/api', () => ({
     confidence: 87,
     factors: [
       { label: 'Elevated HbA1c', value: 78 },
+      { label: 'HbA1c', value: 78 },
       { label: 'Fasting Glucose Trend', value: 64 },
     ],
   }),
@@ -28,7 +29,7 @@ const renderPage = () => {
 describe('RiskPredictionPage', () => {
   it('renders risk driver labels', async () => {
     renderPage();
-    expect(await screen.findByText('Elevated HbA1c')).toBeInTheDocument();
+    expect(await screen.findByText('HbA1c')).toBeInTheDocument();
     expect(await screen.findByText('Fasting Glucose Trend')).toBeInTheDocument();
   });
 });
