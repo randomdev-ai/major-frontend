@@ -10,6 +10,7 @@ vi.mock('../mocks/api', () => ({
     riskLevel: 'Moderate',
     confidence: 87,
     factors: [
+      { label: 'Elevated HbA1c', value: 78 },
       { label: 'HbA1c', value: 78 },
       { label: 'Fasting Glucose Trend', value: 64 },
     ],

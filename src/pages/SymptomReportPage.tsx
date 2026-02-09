@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Mic, UploadCloud } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Stepper from '../components/ui/Stepper';
@@ -124,6 +125,40 @@ const SymptomReportPage: React.FC = () => {
           )}
           {step === 3 && (
             <div className="space-y-4">
+              <div className="flex items-center justify-between text-xs text-slate-400">
+                <span>Attachments</span>
+                <span>Optional: Images or PDF reports</span>
+              </div>
+              <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-500">
+                <UploadCloud className="text-slate-400" />
+                Click to upload or drag and drop
+                <span className="text-xs">SVG, PNG, JPG or GIF (max 800x400px)</span>
+              </div>
+              <div className="rounded-2xl border border-cyan-100 bg-cyan-50 p-4 text-xs text-cyan-700">
+                ✨ AI Ready to Analyze
+                <p className="mt-1 text-slate-500">
+                  Once you submit, our health intelligence engine will cross-reference your symptoms with over 10,000
+                  medical profiles to suggest next steps.
+                </p>
+              </div>
+            </div>
+          )}
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
+            <div className="text-xs text-slate-400">🔒 Your health data is end-to-end encrypted.</div>
+            <div className="flex flex-wrap gap-3">
+              <Button type="button" variant="ghost" onClick={() => reset()}>
+                Reset Form
+              </Button>
+              <Button type="button" variant="ghost" onClick={back} disabled={step === 1}>
+                Back
+              </Button>
+              {step < 3 && (
+                <Button type="button" onClick={step === 1 ? handleNext : handleSecondNext}>
+                  Continue
+                </Button>
+              )}
+              {step === 3 && <Button type="submit">Submit Symptoms →</Button>}
+            </div>
               <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm">
                 Optional file upload area (UI only)
               </div>
