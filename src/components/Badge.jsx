@@ -1,7 +1,8 @@
-import React from 'react';
+const normalize = (value = '') => value.toLowerCase();
 
-const Badge = ({ tone = 'neutral', children }) => {
-  return <span className={`badge badge-${tone}`}>{children}</span>;
+const Badge = ({ label, type }) => {
+  const kind = type || normalize(label);
+  return <span className={`badge badge-${kind}`}>{label}</span>;
 };
 
 export default Badge;
