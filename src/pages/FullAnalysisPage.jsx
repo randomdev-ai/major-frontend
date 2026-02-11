@@ -7,7 +7,6 @@ import Loader from '../components/Loader';
 import { postFullAnalysis } from '../api/healthApi';
 
 const tabs = ['Modern Medicine', 'Ayurveda', 'Homeopathy', 'Lifestyle'];
-const toPercent = (value = 0) => (value > 1 ? Math.round(value) : Math.round(value * 100));
 
 const FullAnalysisPage = () => {
   const [form, setForm] = useState({ symptoms: '', age: '', gender: '' });
@@ -69,9 +68,7 @@ const FullAnalysisPage = () => {
             </select>
           </div>
           {error && <p className="error-text">{error}</p>}
-          <button className="btn" type="submit" disabled={loading}>
-            {loading ? 'Analyzing securely...' : 'Run Secure Analysis'}
-          </button>
+          <button className="btn" type="submit">Run Secure Analysis</button>
         </form>
       </Card>
 
@@ -88,14 +85,14 @@ const FullAnalysisPage = () => {
             <div className="grid two-col">
               <p><strong>Condition:</strong> {result.condition || result.predicted_condition || 'N/A'}</p>
               <p><strong>Risk Level:</strong> <Badge label={result.risk_level || 'Unknown'} /></p>
-              <p><strong>Risk Probability:</strong> {toPercent(result.risk_probability || result.probability || 0)}%</p>
+              <p><strong>Risk Probability:</strong> {Math.round((result.risk_probability || result.probability || 0) * 100)}%</p>
               <p><strong>Data Quality:</strong> {result.data_quality || 'Moderate'}</p>
             </div>
-            <CircularMeter value={toPercent(result.confidence_score || 0.65)} label="Confidence Score" />
+            <CircularMeter value={Math.round((result.confidence_score || 0.65) * 100)} label="Confidence Score" />
           </Card>
 
           <Card title="AI Interpretation">
-            <p>{insightText(toPercent(result.confidence_score || 0.65))}</p>
+            <p>{insightText(Math.round((result.confidence_score || 0.65) * 100))}</p>
           </Card>
 
           <Card title="Key Risk Drivers">

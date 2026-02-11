@@ -5,7 +5,6 @@ import Loader from '../components/Loader';
 import { postQuickAssessment } from '../api/healthApi';
 
 const initialForm = { symptoms: '', age: '', gender: '' };
-const toPercent = (value = 0) => (value > 1 ? Math.round(value) : Math.round(value * 100));
 
 const QuickHealthCheckPage = () => {
   const [form, setForm] = useState(initialForm);
@@ -71,7 +70,7 @@ const QuickHealthCheckPage = () => {
           <div className="grid two-col">
             <p><strong>Condition:</strong> {result.condition || result.predicted_condition || 'Unavailable'}</p>
             <p><strong>Risk:</strong> <Badge label={result.risk_level || 'Unknown'} /></p>
-            <p><strong>Probability:</strong> {toPercent(result.probability || result.risk_probability || 0)}%</p>
+            <p><strong>Probability:</strong> {Math.round((result.probability || result.risk_probability || 0) * 100)}%</p>
           </div>
           <p className="disclaimer">This system provides informational support only and does not offer diagnosis.</p>
         </Card>

@@ -2,21 +2,18 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import Badge from '../components/Badge';
-import ErrorCard from '../components/ErrorCard';
+import Loader from '../components/Loader';
 import { getAssessments } from '../api/healthApi';
 
 const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
   const [assessments, setAssessments] = useState([]);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     const load = async () => {
       try {
         const data = await getAssessments();
-        setAssessments(data);
-      } catch (err) {
-        setError(err.response?.status >= 500 ? 'A system error occurred while loading assessments.' : 'Unable to load assessment history.');
+        setAssessments(Array.isArray(data) ? data : data.results || []);
       } finally {
         setLoading(false);
       }
@@ -34,11 +31,9 @@ const DashboardPage = () => {
 
       <Card title="Recent Assessments" subtitle="Latest five records from secure history">
         {loading ? (
-          <div className="skeleton-list" aria-label="Loading recent assessments">
+          <div className="skeleton-list">
             {[...Array(3)].map((_, i) => <div key={i} className="skeleton-row" />)}
           </div>
-        ) : error ? (
-          <ErrorCard title="Assessment history unavailable" message={error} />
         ) : assessments.length === 0 ? (
           <p className="muted">No assessments are currently available.</p>
         ) : (
@@ -53,9 +48,9 @@ const DashboardPage = () => {
             <tbody>
               {assessments.slice(0, 5).map((entry, index) => (
                 <tr key={entry.id || index}>
-                  <td>{entry.createdAt ? new Date(entry.createdAt).toLocaleDateString() : 'N/A'}</td>
-                  <td>{entry.condition}</td>
-                  <td><Badge label={entry.riskLevel} /></td>
+                  <td>{new Date(entry.created_at || entry.date || Date.now()).toLocaleDateString()}</td>
+                  <td>{entry.condition || entry.predicted_condition || 'N/A'}</td>
+                  <td><Badge label={entry.risk_level || 'Unknown'} /></td>
                 </tr>
               ))}
             </tbody>

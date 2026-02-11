@@ -1,23 +1,5 @@
 import apiClient from './client';
 
-const pickArray = (data) => {
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.results)) return data.results;
-  if (Array.isArray(data?.assessments)) return data.assessments;
-  return [];
-};
-
-const normalizeAssessment = (item = {}) => ({
-  id: item.id ?? item.assessment_id ?? item.pk ?? null,
-  createdAt: item.created_at ?? item.timestamp ?? item.date ?? null,
-  condition: item.condition ?? item.predicted_condition ?? item.label ?? 'N/A',
-  riskLevel: item.risk_level ?? item.risk ?? 'Unknown',
-  probability: item.risk_probability ?? item.probability ?? item.score ?? 0,
-  confidenceScore: item.confidence_score ?? item.confidence ?? 0,
-  dataQuality: item.data_quality ?? item.quality ?? 'N/A',
-  raw: item,
-});
-
 export const getSystemStatus = async () => {
   const { data } = await apiClient.get('/api/status/');
   return data;
@@ -25,7 +7,7 @@ export const getSystemStatus = async () => {
 
 export const getDiseases = async () => {
   const { data } = await apiClient.get('/api/diseases/');
-  return pickArray(data);
+  return data;
 };
 
 export const postQuickAssessment = async (payload) => {
@@ -45,11 +27,5 @@ export const getProfile = async () => {
 
 export const getAssessments = async () => {
   const { data } = await apiClient.get('/api/user/assessments/');
-  return pickArray(data).map(normalizeAssessment);
-};
-
-export const getAssessmentDetails = async (assessmentId) => {
-  const records = await getAssessments();
-  const matched = records.find((record) => String(record.id) === String(assessmentId));
-  return matched || null;
+  return data;
 };
