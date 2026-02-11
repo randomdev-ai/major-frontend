@@ -1,17 +1,17 @@
-import React from 'react';
-import Sidebar from '../components/Sidebar.jsx';
-import TopBar from '../components/TopBar.jsx';
+import { Outlet } from 'react-router-dom';
+import Sidebar from '../components/Sidebar';
+import Topbar from '../components/Topbar';
 
-const AppLayout = ({ children }) => {
-  return (
-    <div className="app-shell">
-      <Sidebar />
-      <div className="app-main">
-        <TopBar />
-        <main className="app-content">{children}</main>
-      </div>
+const AppLayout = () => (
+  <div className="app-shell">
+    <Sidebar />
+    <div className="content-area">
+      <Topbar />
+      <main className="page-content">
+        <Outlet />
+      </main>
     </div>
-  );
-};
+  </div>
+);
 
 export default AppLayout;

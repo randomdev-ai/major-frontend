@@ -1,88 +1,42 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Landing from './pages/Landing.jsx';
-import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx';
-import Dashboard from './pages/Dashboard.jsx';
-import SymptomInput from './pages/SymptomInput.jsx';
-import FileUpload from './pages/FileUpload.jsx';
-import AnalysisProcessing from './pages/AnalysisProcessing.jsx';
-import RiskResult from './pages/RiskResult.jsx';
-import HistoryLogs from './pages/HistoryLogs.jsx';
-import Settings from './pages/Settings.jsx';
-import NotFound from './pages/NotFound.jsx';
-import ProtectedRoute from './components/ProtectedRoute.jsx';
-import { AuthProvider } from './utils/AuthContext.jsx';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import AppLayout from './layouts/AppLayout';
+import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
+import QuickHealthCheckPage from './pages/QuickHealthCheckPage';
+import FullAnalysisPage from './pages/FullAnalysisPage';
+import HistoryPage from './pages/HistoryPage';
+import ProfilePage from './pages/ProfilePage';
 
-const App = () => {
-  return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/risk-analysis"
-            element={
-              <ProtectedRoute>
-                <RiskResult />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/symptom-check"
-            element={
-              <ProtectedRoute>
-                <SymptomInput />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/upload-reports"
-            element={
-              <ProtectedRoute>
-                <FileUpload />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/analysis"
-            element={
-              <ProtectedRoute>
-                <AnalysisProcessing />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/history"
-            element={
-              <ProtectedRoute>
-                <HistoryLogs />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
-  );
-};
+const App = () => (
+  <AuthProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/quick-check" element={<QuickHealthCheckPage />} />
+
+        <Route
+          path="/app"
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="new-analysis" element={<FullAnalysisPage />} />
+          <Route path="history" element={<HistoryPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route index element={<Navigate to="dashboard" replace />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  </AuthProvider>
+);
 
 export default App;
